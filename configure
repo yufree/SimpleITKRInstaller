@@ -7,7 +7,7 @@
 # Requires git and cmake
 #
 export SimpleITKGit=https://github.com/SimpleITK/SimpleITK
-export SITKTAG=v2.1.1
+export SITKTAG=v2.3.0
 
 export PKGBASED=$(pwd)
 echo ${PKGBASED}
@@ -57,7 +57,11 @@ mkdir -p SITK
     exit 1
 
     echo "Parallel build using -j${MAKEJ}"
-    make -j${MAKEJ} &&
+    make -j${MAKEJ} ITK &&
+        ls -la . &&
+        rm -rf ITK-build &&
+        du -d 1 . &&
+        make -j${MAKEJ} &&
     # Use R to do the move to avoid system specific issues.
     ${RCALL} -f ${PKGBASED}/sitkmove.R --args SimpleITK-build/Wrapping/R/Packaging/SimpleITK/ ${PKGBASED} ||
     exit 1
